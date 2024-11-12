@@ -130,3 +130,4 @@ In `manifest.yml`, change the Java buildpack JRE version from `version: 17.+` to
 ~~~
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
 ~~~
+# tpk8s-spring-music
