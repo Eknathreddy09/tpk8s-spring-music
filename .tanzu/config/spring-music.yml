@@ -1,0 +1,12 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  creationTimestamp: null
+  name: spring-music
+spec:
+  build:
+    buildpacks: {}
+    path: ../../build/libs/spring-music-1.0.jar
+  ports:
+  - name: main
+    port: 8080
