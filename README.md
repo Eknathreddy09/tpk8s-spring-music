@@ -52,7 +52,7 @@ If more than one service containing any of these values is bound to the applicat
 After installing the 'tanzu cli' [command-line interface for Tanzu platform](https://docs.vmware.com/en/VMware-Tanzu-CLI/1.4/tanzu-cli/index.html), targeting a app space, and logging in, the application can be built and pushed using the command:
 
 ~~~
-$ tanzu deploy 
+$ tanzu deploy -y
 ~~~
 
 The application will be pushed using settings in the provided `yml` file under .tanzu/config directory. 
@@ -67,40 +67,11 @@ Depending on the Cloud Foundry service provider, persistence services might be o
 
 ~~~
 # view the services available
-$ cf marketplace
+$ tanzu services type list
 # create a service instance
-$ cf create-service <service> <service plan> <service name>
+$ tanzu  services create PostgreSQLInstance/spring-music-db --parameter storageGB=1 --skip-bind-prompt
 # bind the service instance to the application
-$ cf bind-service <app name> <service name>
-# restart the application so the new service is detected
-$ cf restart
-~~~
-
-#### User-provided services
-
-Cloud Foundry also allows service connection information and credentials to be provided by a user. In order for the application to detect and connect to a user-provided service, a single `uri` field should be given in the credentials using the form `<dbtype>://<username>:<password>@<hostname>:<port>/<databasename>`.
-
-These steps use examples for username, password, host name, and database name that should be replaced with real values.
-
-~~~
-# create a user-provided Oracle database service instance
-$ cf create-user-provided-service oracle-db -p '{"uri":"oracle://root:secret@dbserver.example.com:1521/mydatabase"}'
-# create a user-provided MySQL database service instance
-$ cf create-user-provided-service mysql-db -p '{"uri":"mysql://root:secret@dbserver.example.com:3306/mydatabase"}'
-# bind a service instance to the application
-$ cf bind-service <app name> <service name>
-# restart the application so the new service is detected
-$ cf restart
-~~~
-
-#### Changing bound services
-
-To test the application with different services, you can simply stop the app, unbind a service, bind a different database service, and start the app:
-
-~~~
-$ cf unbind-service <app name> <service name>
-$ cf bind-service <app name> <service name>
-$ cf restart
+$ tanzu services bind PostgreSQLInstance/spring-music-db ContainerApp/spring-music
 ~~~
 
 #### Database drivers
@@ -124,5 +95,3 @@ java {
   targetCompatibility = JavaVersion.VERSION_17
 }
 ~~~
-
-# tpk8s-spring-music
